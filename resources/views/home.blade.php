@@ -1,5 +1,5 @@
 @extends('layouts.global')
-@section('title') Home @endsection
+@section('title') Home  @endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
