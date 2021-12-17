@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +29,12 @@ Route::match(["GET","POST"], "/register", function(){
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource("users", UserController::class);
+
+Route::get('/categories/trash',[CategoryController::class,'trash'])->name('categories.trash');
+
+Route::get('/categorie/{id}/restore',[CategoryController::class,'restore'])->name('categories.restore');
+
+Route::delete('/categorie/{id}/delete-permanent',[CategoryController::class,'deletePermanent'])->name('categories.delete-permanent');
+
+Route::resource("categories", CategoryController::class);
+

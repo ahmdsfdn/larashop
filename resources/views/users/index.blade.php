@@ -17,7 +17,7 @@
         <a href="{{route('users.create')}}" class="btn btn-primary">Create User</a>
     </div>
 </div>
-<div class="row">
+{{-- <div class="row">
     <div class="col-md-6">
         <form action="{{route('users.index')}}">
             <div class="input-group mb-3">
@@ -29,7 +29,24 @@
             </div>
         </form>
     </div>
-</div>
+</div> --}}
+<form action="{{route('users.index')}}">
+    <div class="row">
+        <div class="col-md-6">
+            <input type="text" name="keyword" value="{{Request::get('keyword')}}" class="form-control col-md-10"
+                type="text" placeholder="Masukka email untuk filter">
+        </div>
+        <div class="col-md-6">
+            <input {{Request::get('status') == 'ACTIVE' ? 'checked' : ''}} type="radio" value="ACTIVE"
+                name="status"  class="form-control" id="active"><label for="active">Active</label>
+            <input {{Request::get('status') == 'INACTIVE' ? 'checked' : ''}} type="radio" value="INACTIVE"
+                name="status" class="form-control" id="inactive"><label for="inactive">Inactive</label>
+
+            <input type="submit" value="Filter" class="btn btn-primary">
+
+        </div>
+    </div>
+</form>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -37,6 +54,7 @@
             <th><b>Username</b></th>
             <th><b>Email</b></th>
             <th><b>Avatar</b></th>
+            <th><b>Status</b></th>
             <th><b>Action</b></th>
         </tr>
     </thead>
@@ -53,6 +71,15 @@
                 @endif
             </td>
             <td>
+                @if ($user->status=='ACTIVE')
+                <span class="badge badge-success">{{$user->status}}</span>
+                @else
+                <span class="badge badge-danger">
+                    {{$user->status}}
+                </span>
+                @endif
+            </td>
+            <td>
                 <a href="{{route('users.edit',[$user->id])}}" class="btn btn-info text-white btn-sm">Edit</a>
                 <a href="{{route('users.show',[$user->id])}}" class="btn btn-primary btn-sm">Detail</a>
                 <form onsubmit="return confirm('Delete this user permanently?')" class="d-inline"
@@ -65,6 +92,13 @@
         </tr>
         @endforeach
     </tbody>
+    <tfoot>
+        <tr>
+        <td colspan="6" >
+            {{$users->appends(Request::all())->links()}}
+        </td>
+        </tr>
+       </tfoot>
 </table>
 
 

@@ -88,7 +88,8 @@
                 <div class="row">
                     <div class="col-md-12 pl-3 pt-2">
                         <div class="pl-3">
-                            <h3>@yield("pageTitle")</h3>
+                            {{-- <h3>@yield("pageTitle")</h3> --}}
+                            <h3>@yield("title")</h3>
                             <br>
                         </div>
                     </div>
