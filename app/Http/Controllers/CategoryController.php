@@ -136,25 +136,36 @@ class CategoryController extends Controller
 
     public function restore($id)
     {
-       $category = \App\Models\Category::withTrashed()->findOrFail($id);
+        $category = \App\Models\Category::withTrashed()->findOrFail($id);
 
-       if($category->trashed()) {
-           $category->restore();
-       } else {
-           return redirect()->route('categories.index')->with('status','Category is not in trash');
-       }
+        if ($category->trashed()) {
+            $category->restore();
+        } else {
+            return redirect()->route('categories.index')->with('status', 'Category is not in trash');
+        }
 
-       return redirect()->route('categories.index')->with('status','Category succesfully restored');
+        return redirect()->route('categories.index')->with('status', 'Category succesfully restored');
     }
 
     public function deletePermanent($id)
     {
-      $category = \App\Models\Category::withTrashed()->findOrFail($id);
-      if(!$category->trashed()){
-          return redirect()->route('categories.index')->with('status','can not delete permanent active category');
-      } else {
-          $category->forceDelete();
-          return redirect()->route('categories.index')->with('status','Category permanently deleted');
-      }
+        $category = \App\Models\Category::withTrashed()->findOrFail($id);
+        if (!$category->trashed()) {
+            return redirect()->route('categories.index')->with('status', 'can not delete permanent active category');
+        } else {
+            $category->forceDelete();
+            return redirect()->route('categories.index')->with('status', 'Category permanently deleted');
+        }
     }
+
+    public function ajaxSearch(Request $request)
+    {
+        $keyword = $request->get('q');
+
+        $categories = \App\Models\Category::where("name", "LIKE", "%$keyword%")->get();
+    
+        return $categories;
+    }
+
+    
 }

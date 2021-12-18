@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
@@ -32,9 +33,12 @@ Route::resource("users", UserController::class);
 
 Route::get('/categories/trash',[CategoryController::class,'trash'])->name('categories.trash');
 
-Route::get('/categorie/{id}/restore',[CategoryController::class,'restore'])->name('categories.restore');
+Route::get('/categories/{id}/restore',[CategoryController::class,'restore'])->name('categories.restore');
 
-Route::delete('/categorie/{id}/delete-permanent',[CategoryController::class,'deletePermanent'])->name('categories.delete-permanent');
+Route::delete('/categories/{id}/delete-permanent',[CategoryController::class,'deletePermanent'])->name('categories.delete-permanent');
 
 Route::resource("categories", CategoryController::class);
 
+Route::resource('books',BookController::class);
+
+Route::get('/ajax/categories/search', [CategoryController::class,'ajaxSearch']);
