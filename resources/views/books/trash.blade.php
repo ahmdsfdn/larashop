@@ -31,6 +31,14 @@ Trash Books List
     </div>
 </div>
 <hr class="my-3">
+<form action="{{route('books.trash')}}">
+    <div class="input-group">
+        <input name="keyword" type="text" class="form-control" placeholder="Filter by title" value="{{Request::get('keyword')}}">
+        <div class="input-group-append">
+            <input type="submit" value="Filter" class="btn btn-primary">
+        </div>
+    </div>
+</form>
 <div class="row">
     <div class="col-md-12">
         <table class="table table-bordered table-stripped">
@@ -83,7 +91,7 @@ Trash Books List
                             <input type="hidden" value="DELETE" name="_method">
                             <input type="submit" class="btn btn-danger btn-sm" value="Delete">
                         </form>
-                        
+
                         <a href="{{route('books.restore',[$book->id])}}" class="btn btn-sm btn-primary">Restore</a>
 
                     </td>
