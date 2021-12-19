@@ -66,8 +66,8 @@
                     <input type="text" class="border-dark form-control d-block d-md-none mb-4" placeholder="Search" aria-label="Search">
                     <li><a href="/home"><span class="oi oi-home"></span> Home</a></li>
                     <li><a href="{{route('users.index')}}"><span class="oi oi-people"></span> Manage User</a></li>
-                    <li><a href="{{route('categories.index')}}"><span class="oi oi-people"></span> Manage Categories</a></li>
-                    <li><a href="{{route('books.index')}}"><span class="oi oi-people"></span> Manage Books</a></li>
+                    <li><a href="{{route('categories.index')}}"><span class="oi oi-tag"></span> Manage Categories</a></li>
+                    <li><a href="{{route('books.index')}}"><span class="oi oi-book"></span> Manage Books</a></li>
                     <div class="d-block d-md-none">
                         <div class="dropdown-divider">
                             <li><a href="#"> Profile</a></li>

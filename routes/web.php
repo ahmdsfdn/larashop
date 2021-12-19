@@ -4,6 +4,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Models\Category;
 
 /*
@@ -48,3 +49,6 @@ Route::delete('/books/{id}/delete-permanent',[BookController::class,'deletePerma
 Route::resource('books',BookController::class);
 
 Route::get('/ajax/categories/search', [CategoryController::class,'ajaxSearch']);
+
+
+Route::resource('orders',OrderController::class);
