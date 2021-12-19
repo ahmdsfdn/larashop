@@ -26,7 +26,6 @@ Category List
                     <input type="submit" value="Filter" class="btn btn-primary">
                 </div>
             </div>
-
         </form>
     </div>
     <div class="col-md-6">

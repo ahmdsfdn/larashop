@@ -1,7 +1,7 @@
 @extends('layouts.global')
 
 @section('title')
-Books List
+Trash Books List
 @endsection
 @section('content')
 @if(session('status'))
@@ -10,41 +10,27 @@ Books List
 </div>
 @endif
 
-
 <div class="row">
-    <div class="col-md-6"> <a href="{{route('books.create')}}" class="btn btn-primary btn-sm">Create books</a></div>
+    <div class="col-md-6"></div>
     <div class="col-md-6">
         <ul class="nav nav-pills card-header-pills">
             <li class="nav-item">
-                <a class="nav-link {{Request::get('status') == NULL ? 'active' : ''}}" href="{{route("books.index")}}">All</a>
+                <a  class="nav-link {{Request::get('status') == NULL ? 'active' : ''}}" href="{{route("books.index")}}">All</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{Request::get('status') == 'publish' ? 'active' : ''}}" href="{{route("books.index",['status'=> 'publish'])}}">Publish</a>
+                <a  class="nav-link {{Request::get('status') == 'publish' ? 'active' : ''}}" href="{{route("books.index",['status' => 'publish'])}}">Publish</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{Request::get('status') == 'draft' ? 'active' : ''}}" href="{{route("books.index",['status'=> 'draft'])}}">
-                    Draft</a>
+                <a  class="nav-link {{Request::get('status') == 'draft' ? 'active' : ''}}" href="{{route("books.index",['status' => 'draft'])}}">
+                Draft</a>
             </li>
             <li class="nav-item">
-                <a href="{{route('books.trash')}}"
-                    class="nav-link {{Request::path() == 'books/trash' ? 'active' : ''}}">Trash</a>
+                <a  href="{{route('books.trash')}}" class="nav-link {{Request::path() == 'books/trash' ? 'active' : ''}}">Trash</a>
             </li>
         </ul>
     </div>
 </div>
 <hr class="my-3">
-
-<hr class="my-3">
-<form action="{{route('books.index')}}">
-    <div class="input-group">
-        <input  name="keyword" type="text" class="form-control" placeholder="Filter by title" value="{{Request::get('keyword')}}">
-        <div class="input-group-append">
-            <input type="submit" value="Filter" class="btn btn-primary">
-        </div>
-    </div>
-</form>
-
-
 <div class="row">
     <div class="col-md-12">
         <table class="table table-bordered table-stripped">
@@ -64,7 +50,7 @@ Books List
                 @foreach ($books as $book)
                 <tr>
                     <td>@if ($book->cover)
-                        <img width="100px" src="{{asset('public/storage/'.$book->cover)}}" alt="">
+                        <img src="{{asset('public/storage'.$book->cover)}}" alt="">
                         @endif
                     </td>
                     <td>
@@ -92,14 +78,13 @@ Books List
                     <td>{{$book->stock}}</td>
                     <td>{{$book->price}}</td>
                     <td>
-                        <a href="{{route('books.show',[$book->id])}}" class="btn btn-primary btn-sm">Show</a>
-                        <a href="{{route('books.edit',[$book->id])}}" class="btn btn-info btn-sm">Edit</a>
-                        <form class="d-inline" onsubmit="return confirm('Move book to trash?')"
-                            action="{{route('books.destroy',[$book->id])}}" method="POST">
+                        <form onsubmit="return confirm('Apakah anda yakin dengan menghapus data ini permanen?')" action="{{route('books.delete-permanent',[$book->id])}}" method="POST">
                             @csrf
                             <input type="hidden" value="DELETE" name="_method">
-                            <input type="submit" class="btn btn-danger btn-sm" value="Trash">
+                            <input type="submit" class="btn btn-danger btn-sm" value="Delete">
                         </form>
+                        
+                        <a href="{{route('books.restore',[$book->id])}}" class="btn btn-sm btn-primary">Restore</a>
 
                     </td>
                 </tr>
