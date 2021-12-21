@@ -8,6 +8,14 @@ use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Gate::allows('manage-books')) return $next($request);
+            abort(403, 'Anda tidak memiliki cukup hak akses');
+        });
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,9 +27,9 @@ class BookController extends Controller
         $status = $request->get('status');
         $keyword = $request->get('keyword') ? $request->get('keyword') : '';
         if ($status) {
-            $books = \App\Models\Book::with('categories')->where('status', strtoupper($status))->where('title','LIKE',"%$keyword%")->paginate(10);
+            $books = \App\Models\Book::with('categories')->where('status', strtoupper($status))->where('title', 'LIKE', "%$keyword%")->paginate(10);
         } else {
-            $books = \App\Models\Book::with('categories')->where('title','LIKE',"%$keyword%")->paginate(10);
+            $books = \App\Models\Book::with('categories')->where('title', 'LIKE', "%$keyword%")->paginate(10);
         }
 
         return view('books.index', ['books' => $books]);
@@ -45,7 +53,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        \Validator::make($request->all(),[
+        \Validator::make($request->all(), [
             "title" => "required|min:5|max:200",
             "description" => "required|min:20|max:1000",
             "author" => "required|min:3|max:100",
@@ -119,11 +127,11 @@ class BookController extends Controller
     {
         $book = \App\Models\Book::findOrFail($id);
 
-        \Validator::make($request->all(),[
+        \Validator::make($request->all(), [
             "title" => "required|min:5|max:200",
             "slug" => [
                 "required",
-                Rule::unique("books")->ignore($book->slug,"slug")
+                Rule::unique("books")->ignore($book->slug, "slug")
             ],
             "description" => "required|min:20|max:1000",
             "author" => "required|min:3|max:100",
@@ -177,9 +185,9 @@ class BookController extends Controller
     public function trash(Request $request)
     {
         $title = $request->get('keyword');
-     
+
         if ($title) {
-            $books = \App\Models\Book::onlyTrashed()->where('title','LIKE',"%$title%")->paginate(10);
+            $books = \App\Models\Book::onlyTrashed()->where('title', 'LIKE', "%$title%")->paginate(10);
         } else {
             $books = \App\Models\Book::onlyTrashed()->paginate(10);
         }
@@ -206,7 +214,7 @@ class BookController extends Controller
             $books->restore();
             return redirect()->route('books.trash')->with('status', 'Book succesfully restored');
         } else {
-            return redirect()->route('books.trash')->with('status','Book is not in trash');
+            return redirect()->route('books.trash')->with('status', 'Book is not in trash');
         }
     }
 }

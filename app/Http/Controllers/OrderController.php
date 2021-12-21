@@ -3,9 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class OrderController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Gate::allows('manage-orders')) return $next($request);
+            abort(403, 'Anda tidak memiliki cukup hak akses');
+        });
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,13 +22,13 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $status =$request->get('status');
+        $status = $request->get('status');
         $buyer_email = $request->get('buyer_email');
 
-        $orders = \App\Models\Order::with('user')->with('books')->whereHas('user',function($query) use ($buyer_email){
-            $query->where('email','LIKE',"%$buyer_email%");
-        })->where('status','LIKE',"%$status%")->paginate(10);
-        
+        $orders = \App\Models\Order::with('user')->with('books')->whereHas('user', function ($query) use ($buyer_email) {
+            $query->where('email', 'LIKE', "%$buyer_email%");
+        })->where('status', 'LIKE', "%$status%")->paginate(10);
+
         return view('orders.index', ['orders' => $orders]);
     }
 
@@ -80,7 +89,7 @@ class OrderController extends Controller
         $orders->status = $request->get('status');
         $orders->save();
 
-        return redirect()->route('orders.edit', [$orders->id])->with('status', 'Order status succesfully updated'); 
+        return redirect()->route('orders.edit', [$orders->id])->with('status', 'Order status succesfully updated');
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -11,6 +12,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct()
+     {
+         
+        $this->middleware(function($request, $next){
+            if (Gate::allows('manage-users')) return $next($request);
+            abort(403,'Anda tidak memiliki cukup hak akses');
+        });
+     }
+
     public function index(Request $request)
     {
      
@@ -52,7 +63,7 @@ class UserController extends Controller
             "username" => "required|min:5|max:20",
             "roles" => "required",
             "phone" => "required|digits_between:10,12",
-            "address" => "required|min:20|max:20",
+            "address" => "required|min:20|max:200",
             "avatar" => "required",
             "email" => "required|email",
             "password" => "required",
