@@ -92,7 +92,7 @@ Books List
                     <td>{{$book->stock}}</td>
                     <td>{{$book->price}}</td>
                     <td>
-                        <a href="{{route('books.show',[$book->id])}}" class="btn btn-primary btn-sm">Show</a>
+                        {{-- <a href="{{route('books.show',[$book->id])}}" class="btn btn-primary btn-sm">Show</a> --}}
                         <a href="{{route('books.edit',[$book->id])}}" class="btn btn-info btn-sm">Edit</a>
                         <form class="d-inline" onsubmit="return confirm('Move book to trash?')"
                             action="{{route('books.destroy',[$book->id])}}" method="POST">
